@@ -189,9 +189,17 @@ function legalBall(){
  bowl.b++;
  striker.b++;
  partBalls++;
- if(balls%6===0)swap();
- if(balls>=Number(document.getElementById('maxOvers').value)*6)
- document.getElementById('result').innerText="Overs completed!";
+
+ if(balls%6===0){
+   swap();
+
+   if(balls < Number(document.getElementById('maxOvers').value)*6 && wickets<10){
+     let next=prompt('Over completed! Enter New Bowler Name:', '');
+     if(next && next.trim()){
+       bowl={name:next.trim(),r:0,w:0,b:0};
+     }
+   }
+ }
 }
 
 function swap(){
@@ -260,9 +268,24 @@ function changeStrike(){
 }
 
 function undo(){
- if(!history.length)return;
+ if(!history.length){
+   alert('Nothing to undo');
+   return;
+ }
  let d=JSON.parse(history.pop());
- Object.assign(window,d);
+ runs=d.runs;
+ wickets=d.wickets;
+ balls=d.balls;
+ extras=d.extras;
+ striker=d.striker;
+ non=d.non;
+ bowl=d.bowl;
+ batters=d.batters;
+ last=d.last;
+ fow=d.fow;
+ partnership=d.partnership;
+ partBalls=d.partBalls;
+ started=d.started;
  render();
 }
 
